@@ -1,0 +1,71 @@
+version: "3.9"
+
+services:
+  app:
+    image: chat-app
+    container_name: chat-app
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./:/app
+      - ./Gemfile:/app/Gemfile
+      - ./Gemfile.lock:/app/Gemfile.lock
+      - ./package.json:/app/package.json
+      - cache:/cache
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    ports:
+      - "3002:3000"
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_NAME=chat_app_db
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=
+      - RACK_ENV=development
+      - RAILS_ENV=development
+      - REDIS_HOST=redis
+      - SPROCKETS_CACHE=/cache
+      - SHARE_SECRET_KEY=tai-chau
+    labels:
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.enable=true"
+      - "traefik.backend=app"
+      - "traefik.port=3000"
+      - "traefik.frontend.entryPoints=http,https"
+      - "traefik.frontend.rule=Host:chat-app.local.dev;PathPrefix:/"
+      - "traefik.tags=app"
+    networks:
+      - traefik
+  db:
+    image: bitnami/mariadb:10.3
+    container_name: chat-app-db
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=chat_app_db
+      - MARIADB_DATABASE=chat_app_db
+    ports:
+      - 3332:3306
+    networks:
+      - traefik
+  redis:
+    image: 'bitnami/redis:latest'
+    container_name: chat-app-redis
+    command: ["redis-server", "--protected-mode", "no"]
+    ports:
+    - "6382:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external:
+      name: traefik_proxy
+
+volumes:
+  cache:
+
+
