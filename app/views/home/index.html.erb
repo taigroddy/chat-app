@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-md-3">
+    <div class="rooms">
+      <%= link_to 'New room', new_room_path, class: "btn btn-primary room" %>
+
+      <% @rooms.each do |room| %>
+        <%= render 'rooms/item', room: room %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col-md-9 position-relative">
+    <div class="show-messages">
+      <%= render template: 'messages/message_box', messages: @messages %>
+    </div>
+    <div class="send-message">
+      <%= form_with url: add_message_rooms_path, method: :post, id: 'send-mesage-box' do |form| %>
+        <%= form.text_area :content %>
+        <%= form.hidden_field :room_id, value: @rooms.first.id %>
+        <%= form.submit 'Send', name: 'send' %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+// Place all the styles related to the Home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.rooms {
+  height: 100vh;
+  min-height: 100%;
+  border-right: 1px solid gray;
+  overflow: scroll;
+  .room {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 10px;
+    border-bottom: 1px solid gray;
+    &.active {
+      background: #c5c5c5;
+    }
+  }
+}
+
+.show-messages {
+  height: calc(100vh - 70px);
+  overflow: scroll;
+}
+
+.send-message {
+  position: absolute;
+  width: 100%;
+  bottom: 10px;
+  form {
+    display: flex;
+  }
+  textarea {
+    width: 80%;
+  }
+  input[type="submit"] {
+    width: 15%;
+    margin-left: 16px;
+  }
+}

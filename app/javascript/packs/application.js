@@ -11,3 +11,10 @@ import "channels"
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+require('jquery')
+require('popper.js')
+require('@popperjs/core')
+require('bootstrap')
+require('./home')
+require('./room')

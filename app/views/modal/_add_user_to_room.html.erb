@@ -1,0 +1,27 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Add users
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <%= form_with url: add_users_room_path(room), method: :post do |form| %>
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Users</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <%= form.collection_check_boxes(:user_ids, users, :id, :email) do |b| %>
+            <%= b.check_box %>
+            <%= b.label %>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <%= form.submit :add %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
