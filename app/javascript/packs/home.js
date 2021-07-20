@@ -1,10 +1,19 @@
 import { loadRoomMessages } from './message';
 
+// Form
 $(document).on('submit', '#send-mesage-box', function($e) {
   $e.preventDefault();
   this.submit();
   this.reset();
 })
+
+$(document).on('submit', '#new-room-form', function($e) {
+  $e.preventDefault();
+  this.submit();
+  $('#close-new-room-form').click();
+  this.reset();
+})
+
 
 $(document).on('keypress', '#send-mesage-box textarea', function() {
   if ($(this).val().length > 0) {

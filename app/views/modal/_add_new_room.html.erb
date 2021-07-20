@@ -1,0 +1,31 @@
+<!-- New room modal -->
+<button type="button" class="btn btn-primary" id="btn-new-room" data-bs-toggle="modal" data-bs-target="#newRoom">
+  New room
+</button>
+
+<div class="modal fade" id="newRoom">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newRoom">New room</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-new-room-form"></button>
+      </div>
+
+      <%= form_with(url: rooms_path, model: Room.new, method: :post, id: 'new-room-form') do |form| %>
+        <div class="modal-body">
+          <%= form.text_field :title %>
+          <%= form.collection_check_boxes(:user_ids, users, :id, :email) do |b| %>
+            <%= b.check_box %>
+            <%= b.label %>
+          <% end %>
+        </div>
+
+        <div class="modal-footer">
+          <%= form.submit :add %>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+<!-- END -->

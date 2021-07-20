@@ -1,0 +1,5 @@
+<div class="room">
+  <input type="hidden" value="<%= room.present? ? room.id : '{{id}}' %>">
+  <h6><%= room.present? ? room.title : '{{title}}' %></h6>
+  <p><%= room.present? ? room.last_message : '{{last_message}}' %></p>
+</div>

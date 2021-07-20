@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root 'home#index'
 
-  resources :rooms do
+  resources :rooms, only: %i[create update destroy] do
     member do
       post :add_message, action: :add_message
       post :add_users, action: :add_users
@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     collection do
       post :add_message, action: :add_message
       post :load_messages, action: :load_messages
+      get  :template, action: :template
     end
   end
 

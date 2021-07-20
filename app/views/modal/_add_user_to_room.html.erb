@@ -1,15 +1,15 @@
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUsers">
   Add users
 </button>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addUsers">
   <div class="modal-dialog">
     <div class="modal-content">
       <%= form_with url: add_users_room_path(room), method: :post do |form| %>
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Users</h5>
+          <h5 class="modal-title" id="addUsers">Users</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">

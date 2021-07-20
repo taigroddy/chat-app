@@ -1,4 +1,4 @@
 <div class="message-line">
-  <p>{{name}}</p>
-  <p class="alert alert-primary">{{content}}</p>
+  <p><%= message.present? ? message.name : '{{name}}' %></p>
+  <p class="alert alert-primary"><%= message.present? ? message.content : '{{content}}' %></p>
 </div>

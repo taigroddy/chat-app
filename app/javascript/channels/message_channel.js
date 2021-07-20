@@ -3,13 +3,13 @@ require('../packs/room')
 import consumer from "./consumer"
 import { getMessageTemplate, addMessage, messageBoxScrollTop } from '../packs/message';
 
-var template  = ''
+var messageTemplate  = ''
 
 consumer.subscriptions.create("MessageChannel", {
   async connected() {
     console.log('MessageChannel is connected')
 
-    template = await getMessageTemplate();
+    messageTemplate = await getMessageTemplate();
   },
 
   disconnected() {
@@ -17,7 +17,9 @@ consumer.subscriptions.create("MessageChannel", {
   },
 
   received(data) {
-    $('.show-messages').append(addMessage(template, data))
+    if (data.room_id == $('#room_id').val()) {
+      $('.show-messages').append(addMessage(messageTemplate, data))
+    }
 
     messageBoxScrollTop()
   }

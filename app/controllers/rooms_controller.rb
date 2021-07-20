@@ -1,67 +1,36 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: %i[ show edit update destroy add_message add_users load_messages]
 
-  # GET /rooms or /rooms.json
-  def index
-    @rooms = current_user.rooms
-  end
-
-  # GET /rooms/1 or /rooms/1.json
-  def show
-    @messages = @room.messages
-  end
-
-  # GET /rooms/new
-  def new
-    @room = Room.new
-  end
-
-  # GET /rooms/1/edit
-  def edit
-  end
-
   # POST /rooms or /rooms.json
   def create
-    @room = Room.new(room_params)
+    room = Room.new(room_params)
 
-    respond_to do |format|
-      if @room.save
-        format.html { redirect_to @room, notice: "Room was successfully created." }
-        format.json { render :show, status: :created, location: @room }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @room.errors, status: :unprocessable_entity }
-      end
+    room.users << current_user
+
+    if room.save
+      ActionCable.server.broadcast 'room_channel', { action: 'create', title: room.title, id: room.id, last_message: ''  } 
     end
   end
 
   # PATCH/PUT /rooms/1 or /rooms/1.json
   def update
-    respond_to do |format|
-      if @room.update(room_params)
-        format.html { redirect_to @room, notice: "Room was successfully updated." }
-        format.json { render :show, status: :ok, location: @room }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @room.errors, status: :unprocessable_entity }
-      end
+    if @room.update(room_params)
+      ActionCable.server.broadcast 'room_channel', { action: 'update', updated: { **@room.to_h  } } 
     end
   end
 
   # DELETE /rooms/1 or /rooms/1.json
   def destroy
     @room.destroy
-    respond_to do |format|
-      format.html { redirect_to rooms_url, notice: "Room was successfully destroyed." }
-      format.json { head :no_content }
-    end
+
+    ActionCable.server.broadcast 'room_channel', { action: 'delete' }
   end
 
   def add_message
     message = Message.create(message_params)
 
     if message
-      ActionCable.server.broadcast 'message_channel', { content: message.content, name: current_user.email } 
+      ActionCable.server.broadcast 'message_channel', { content: message.content, name: current_user.email, room_id: message.room_id } 
     end 
   end
 
@@ -70,13 +39,19 @@ class RoomsController < ApplicationController
 
     @room.users << users
     
-    @room.save!
+    if @room.save!
+      ActionCable.server.broadcast 'room_channel', { action: 'add_users', name: users.pluck(:name) }
+    end
   end
 
   def load_messages
-    @messages = @room.messages
+    @messages = @room.messages.joins(:user).select('messages.*', 'users.email as user_email')
 
     render template: 'messages/message_box', layout: false
+  end
+
+  def template
+    render template: 'rooms/template', layout: false, locals: { room: {} }
   end
 
   private
@@ -87,7 +62,7 @@ class RoomsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def room_params
-      params.require(:room).permit(:title).merge(users: [current_user])
+      params.require(:room).permit(:title, user_ids: [])
     end
 
     def message_params
