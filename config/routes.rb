@@ -1,22 +1,19 @@
 Rails.application.routes.draw do
   root 'home#index'
 
-  resources :rooms, only: %i[create update destroy] do
-    member do
-      post :add_message, action: :add_message
-      post :add_users, action: :add_users
-    end
-
+  resources :rooms, only: [:create, :update, :destroy] do
     collection do
       post :add_message, action: :add_message
+      post :add_users, action: :add_users
       post :load_messages, action: :load_messages
-      get  :template, action: :template
     end
   end
 
-  resources :messages, only: [] do
+  resources :templates, only: [] do
     collection do
-      get :template, action: :template
+      get :message, action: :message
+      get :user, action: :user
+      get :room, action: :room
     end
   end
 

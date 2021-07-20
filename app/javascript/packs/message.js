@@ -1,27 +1,19 @@
+import { generateHTMLFromTemplate, getTemplate } from './template'
+
 require('jquery')
 
-export function getMessageTemplate() {
-  return $.get('/messages/template', function(data) {
-    return data
-  }).fail(function() {
-    // default template
-    return `
-      <p>{{name}}</p>
-      <p class="alert alert-primary">{{content}}</p>
-    `
-  })
+export async function getFriendTemplate() {
+  return await getTemplate('/templates/message')
 }
 
-export function addMessage(template, data) {
-  var attrs =  template.match(/{{[\w]*}}/g)
+export async function getMeTemplate() {
+  return await getTemplate('/templates/message?for=me')
+}
 
-  jQuery.each(attrs, function(index, item) {
-    var key = item.replaceAll('{', '').replaceAll('}', '')
-
-    template = template.replaceAll(item, data[key])
-  })
-
-  return template;
+export function addMessageUI(selector, template, data) {
+  $(selector).append(
+    generateHTMLFromTemplate(template, data)
+  )
 }
 
 export function messageBoxScrollTop() {

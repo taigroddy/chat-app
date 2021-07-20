@@ -10,13 +10,14 @@
   </div>
 
   <div class="col-md-9 position-relative">
+    <%= render 'modal/add_users', users: @users %>
     <div class="show-messages">
       <%= render template: 'messages/message_box', messages: @messages %>
     </div>
     <div class="send-message">
       <%= form_with url: add_message_rooms_path, method: :post, id: 'send-mesage-box' do |form| %>
         <%= form.text_area :content %>
-        <%= form.hidden_field :room_id, value: @rooms.first.id %>
+        <%= form.hidden_field :room_id, value: @rooms.present? ? @rooms.first.id : 0 %>
         <%= form.submit 'Send', name: 'send' %>
       <% end %>
     </div>

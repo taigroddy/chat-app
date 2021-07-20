@@ -1,13 +1,16 @@
-import consumer from "./consumer";
-import { getTemplate, generateRoomHTML } from '../packs/room';
+import consumer from "./consumer"
+import { getMeTemplate, getFriendTemplate, addMessageUI, messageBoxScrollTop } from '../packs/message'
+import { getRoomTemplate } from "../packs/room";
+import { addJoinRoomUI, getJoinRoomTemplate } from "../packs/user";
 
-var roomTemplate = '';
 
 consumer.subscriptions.create("RoomChannel", {
   async connected() {
     console.log('RoomChannel is connected')
 
-    roomTemplate = await getTemplate()
+    window.messageByMeTemplate     = await getMeTemplate(),
+    window.messageByFriendTemplate = await getFriendTemplate(),
+    window.joinRoomTemplate        = await getJoinRoomTemplate()
   },
 
   disconnected() {
@@ -15,8 +18,26 @@ consumer.subscriptions.create("RoomChannel", {
   },
 
   received(data) {
-    if (data.action == 'create') {
-      $('.rooms').append(generateRoomHTML(roomTemplate, data))
+    switch(data.type) {
+      case 'users':
+        joinUsersToRoom(data.users, data.room_id)
+
+        messageBoxScrollTop()
+        break
+      case 'message':
+        let template = data.sent_by == 'me' ? messageByMeTemplate : messageByFriendTemplate;
+
+        addMessageUI('.show-messages', template, data)
+
+        messageBoxScrollTop()
+        break;
     }
   }
 });
+
+
+function joinUsersToRoom(users, room_id) {
+  $.each(users, function(index, user) {
+    addJoinRoomUI('.show-messages', joinRoomTemplate, user, room_id)
+  })
+}

@@ -1,0 +1,4 @@
+<div class="message-line">
+  <p><%= message.present? ? message[:name] : '{{sent_by}}' %></p>
+  <p class="alert alert-primary"><%= message.present? ? message[:content] : '{{content}}' %></p>
+</div>

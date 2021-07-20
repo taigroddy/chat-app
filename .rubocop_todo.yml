@@ -95,6 +95,8 @@ Style/Documentation:
     - 'app/helpers/application_helper.rb'
     - 'app/models/application_record.rb'
     - 'config/application.rb'
+    - 'app/channels/application_cable/connection.rb'
+    - 'db/**/*'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -174,3 +176,8 @@ Style/SymbolArray:
 # URISchemes: http, https
 Layout/LineLength:
   Max: 198
+
+Metrics/BlockLength:
+  Exclude:
+    - 'config/environments/*'
+    - 'db/**/*'
