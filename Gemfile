@@ -45,6 +45,8 @@ group :development do
 
   # Rubocop check style code
   gem "rubocop", "~> 1.18"
+
+  gem 'fasterer', '~> 0.9.0'
 end
 
 group :test do
