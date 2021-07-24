@@ -7,7 +7,7 @@ class RoomChannel < ApplicationCable::Channel
 
     current_user.rooms.each do |room|
       stream_for room, coder: ActiveSupport::JSON do |message|
-        transmit data_processing(message)
+        transmit data_processing(message, room.id)
       end
     end
   end
@@ -22,7 +22,7 @@ class RoomChannel < ApplicationCable::Channel
     if message.present?
       case message['type']
       when 'message'
-        message['sent_by'] = message['user_id'] == current_user.id ? 'me' : message['email']
+        message['sent_by'] = 'me' if message['user_id'] == current_user.id
       when 'room'
         message['last_message'] = message['default_message'] || ''
       end

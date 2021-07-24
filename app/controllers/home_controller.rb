@@ -3,7 +3,7 @@
 ##
 class HomeController < ApplicationController
   def index
-    @rooms = current_user.rooms.left_joins(:messages).group('rooms.id').select('rooms.*', 'messages.content as last_message')
+    @rooms = Rooms::LastMessageQuery.call(current_user.id)
 
     @messages = @rooms.present? ? Message.where(room_id: @rooms.first.id).select_user_email : []
 

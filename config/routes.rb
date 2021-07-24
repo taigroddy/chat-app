@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :rooms, only: [:create, :update, :destroy] do
     collection do
       post :add_message, action: :add_message
-      post :add_users, action: :add_users
+      post :add_users, action: :add_users_to_room
       post :load_messages, action: :load_messages
     end
   end

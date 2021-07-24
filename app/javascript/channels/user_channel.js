@@ -3,6 +3,8 @@ import consumer from "./consumer"
 
 consumer.subscriptions.create("UserChannel", {
   async connected() {
+    console.log('UserChannel is connected');
+
     window.roomTemplate = await getRoomTemplate()
   },
 

@@ -18,6 +18,8 @@ consumer.subscriptions.create("RoomChannel", {
   },
 
   received(data) {
+    console.log(data);
+
     switch(data.type) {
       case 'users':
         joinUsersToRoom(data.users, data.room_id)
@@ -27,7 +29,7 @@ consumer.subscriptions.create("RoomChannel", {
       case 'message':
         let template = data.sent_by == 'me' ? messageByMeTemplate : messageByFriendTemplate;
 
-        addMessageUI('.show-messages', template, data)
+        addMessageUI('.message-box', template, data)
 
         messageBoxScrollTop()
         break;
@@ -38,6 +40,6 @@ consumer.subscriptions.create("RoomChannel", {
 
 function joinUsersToRoom(users, room_id) {
   $.each(users, function(index, user) {
-    addJoinRoomUI('.show-messages', joinRoomTemplate, user, room_id)
+    addJoinRoomUI('.message-box', joinRoomTemplate, user, room_id)
   })
 }

@@ -2,8 +2,16 @@
 # Room model
 ##
 class Room < ApplicationRecord
-  has_and_belongs_to_many :users
   has_many :messages
+  has_and_belongs_to_many :users do
+    attr_accessor :new_entries
+
+    def << (value)
+      self.new_entries = Array(value) - self
+
+      self.replace(self | Array(value))
+    end
+  end
 
   # Before action
   before_create :generate_key

@@ -2,23 +2,11 @@
 # RoomsController
 ##
 class RoomsController < ApplicationController
-  before_action :set_room, only: [:show, :edit, :update, :destroy, :add_message, :add_users, :load_messages]
+  before_action :set_room, only: [:show, :edit, :update, :destroy, :add_users_to_room, :add_message, :load_messages]
 
   # POST /rooms or /rooms.json
   def create
-    room = Room.new(room_params)
-
-    room.users << current_user
-
-    room.save
-
-    room.users.each do |user|
-      UserChannel.broadcast_to(user, room.as_json(methods: :default_message))
-    end
-
-    RoomChannel.broadcast_to(room, { type: 'users', users: users })
-
-    room.errors.clear
+    add_users_to_room
   end
 
   # PATCH/PUT /rooms/1 or /rooms/1.json
@@ -35,29 +23,25 @@ class RoomsController < ApplicationController
   def add_message
     message = Message.create(message_params)
 
-    RoomChannel.broadcast_to(@room, message.as_json.merge(email: message.user.email))
+    RoomChannel.broadcast_to(@room, message.as_json.merge(sent_by: current_user.email))
   end
 
-  def add_users
-    users = User.where(id: params.dig(:room, :user_ids))
+  def load_messages
+    @messages = @room.messages.joins(:user).select_user_email.map(&map_message_info)
+
+    render json: @messages
+  end
+
+  def add_users_to_room
+    @room ||= Room.new(room_params)
+
+    users = User.where(id: params.dig(:room, :user_ids)) + [current_user]
 
     @room.users << users
 
     @room.save
 
-    RoomChannel.broadcast_to(@room, { type: 'users', users: users })
-
-    users.each do |user|
-      UserChannel.broadcast_to(user, @room)
-    end
-
-    @room.errors.clear
-  end
-
-  def load_messages
-    @messages = @room.messages.joins(:user).select_user_email
-
-    render template: 'messages/message_box', layout: false
+    helpers.notify_room_of_user(@room, { methods: :default_message })
   end
 
   private
@@ -68,10 +52,21 @@ class RoomsController < ApplicationController
   end
 
   def room_params
-    params.require(:room).permit(:title, user_ids: [])
+    params.require(:room).permit(:title)
   end
 
   def message_params
     params.permit(:content).merge({ user: current_user, room: @room })
+  end
+
+  def map_message_info
+    lambda do |m|
+      sent_by = m.sent_by == current_user.email ? 'Me' : m.sent_by
+
+      { 
+        sent_by: sent_by, 
+        content: m.content
+      }
+    end
   end
 end

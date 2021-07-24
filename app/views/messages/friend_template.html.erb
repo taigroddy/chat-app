@@ -1,4 +1,9 @@
+<% 
+  sent_by = message.try(:sent_by) || '{{sent_by}}'
+  content = message.try(:content) || '{{content}}'
+%>
+
 <div class="message-line">
-  <p><%= message.present? ? message[:name] : '{{sent_by}}' %></p>
-  <p class="alert alert-primary"><%= message.present? ? message[:content] : '{{content}}' %></p>
+  <p><%= sent_by %></p>
+  <p class="alert alert-primary"><%= content %></p>
 </div>
