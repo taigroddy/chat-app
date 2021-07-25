@@ -13,11 +13,11 @@ consumer.subscriptions.create("UserChannel", {
   },
 
   received(data) {
-    console.log(data)
-
     switch(data.type) {
       case 'room':
-        addRoomUI('.rooms', roomTemplate, data)
+        data['sent_at'] = ''
+
+        addRoomUI('.inbox_chat', roomTemplate, data)
         break;
     }
   }

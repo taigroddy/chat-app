@@ -17,6 +17,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :users, only: [:index] do
+    collection do
+      get :logout, action: :logout
+    end
+  end
+
   devise_for :users
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

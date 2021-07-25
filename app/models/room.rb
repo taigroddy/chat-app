@@ -6,10 +6,10 @@ class Room < ApplicationRecord
   has_and_belongs_to_many :users do
     attr_accessor :new_entries
 
-    def << (value)
+    def <<(value)
       self.new_entries = Array(value) - self
 
-      self.replace(self | Array(value))
+      replace(self | Array(value))
     end
   end
 

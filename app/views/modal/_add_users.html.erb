@@ -1,26 +1,29 @@
-<!-- New room modal -->
-<button type="button" class="btn btn-primary" id="btn-new-room" data-bs-toggle="modal" data-bs-target="#addUsers">
+<!-- Add users to room modal -->
+<a class="btn btn-light" data-toggle="modal" data-target="#addUsers">
+  <i class="fa fa-plus" aria-hidden="true"></i>
   Add users
-</button>
+</a>
 
 <div class="modal fade" id="addUsers">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addUsers">Add users</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-add-users-form"></button>
+        <h5 class="modal-title">Add users</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close-add-users-form">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
 
       <%= form_with(url: add_users_rooms_path, model: Room.new, method: :post, id: 'add-user-form') do |form| %>
         <div class="modal-body">
-          <%= form.collection_check_boxes(:user_ids, users, :id, :email) do |b| %>
-            <%= b.check_box %>
-            <%= b.label %>
-          <% end %>
+          <div class="form-group">
+            <%= form.label :add_users %>
+            <%= form.select :user_ids, [], { }, multiple: true, class: 'form-control' %>
+          </div>
         </div>
 
         <div class="modal-footer">
-          <%= form.submit :add %>
+          <%= form.submit 'Add', name: :and, class: 'btn btn-info' %>
         </div>
       <% end %>
 

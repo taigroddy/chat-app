@@ -45,7 +45,12 @@ group :development do
 
   # Rubocop check style code
   gem "rubocop", "~> 1.18"
+  gem 'erb_lint', '~> 0.0.37'
 
+  # Check clean code
+  gem 'rubycritic', '~> 4.6', '>= 4.6.1'
+
+  # Check ruby function used in code
   gem 'fasterer', '~> 0.9.0'
 end
 

@@ -16,6 +16,16 @@ require('jquery')
 require('popper.js')
 require('@popperjs/core')
 require('bootstrap')
+require('animate.css')
 require('./custom-turbolinks')
 require('./home')
 require('./room')
+
+$.fn.sortChildren = function(attr_name) {
+  this
+    .children()
+    .sort((a,b) => $(b).data(attr_name) - $(a).data(attr_name) || -1)
+    .appendTo(this);
+
+  return this;
+}

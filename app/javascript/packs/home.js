@@ -1,10 +1,17 @@
+import { addUsersBeforeModalOpen } from './custom-modal';
 import { loadRoomMessages } from './message';
+import { refreshLastSentAtOfRoom } from './room';
 
 // Form
 $(document).on('submit', '#send-mesage-box', function($e) {
   $e.preventDefault();
-  this.submit();
-  this.reset();
+  
+  let input = $(this).find('input[type="text"]').val()
+  
+  if(input != undefined && input != '') {
+    this.submit();
+    this.reset();
+  }
 })
 
 $(document).on('submit', '#new-room-form', function($e) {
@@ -36,13 +43,28 @@ $(document).on('keypress', '#send-mesage-box textarea', function() {
   }
 })
 
-$(document).on('click', '.room', function() {
-  var room_id = $(this).find('input[type="hidden"]').val()
-  
+$(document).on('click', '.chat_list', function() {
+  let room_id = $(this).data('room-id'),
+      title   = $(this).data('title')
+
   $('#send-mesage-box #room_id').val(room_id)
+  $('#room-tilte').html(title)
 
   loadRoomMessages(room_id);
  
-  $('.room').removeClass('active')
+  $('.chat_list').removeClass('active')
   $(this).addClass('active')
+});
+
+addUsersBeforeModalOpen('#newRoom', { exclude: 'me' })
+addUsersBeforeModalOpen('#addUsers', { exclude: 'me' })
+
+$(document).ready(function(){ 
+  refreshLastSentAtOfRoom()
+})
+
+setInterval(() => { refreshLastSentAtOfRoom }, 60000)
+
+$(window).on('focus', function () {
+  refreshLastSentAtOfRoom()
 });

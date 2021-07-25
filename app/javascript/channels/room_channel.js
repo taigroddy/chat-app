@@ -1,6 +1,6 @@
 import consumer from "./consumer"
-import { getMeTemplate, getFriendTemplate, addMessageUI, messageBoxScrollTop } from '../packs/message'
-import { getRoomTemplate } from "../packs/room";
+import { getMeTemplate, getFriendTemplate, addMessageUI, messageBoxScrollTop, isSentByMe } from '../packs/message'
+import { isInChatRoom, notifyRoom, updateRoomUI } from "../packs/room";
 import { addJoinRoomUI, getJoinRoomTemplate } from "../packs/user";
 
 
@@ -18,8 +18,6 @@ consumer.subscriptions.create("RoomChannel", {
   },
 
   received(data) {
-    console.log(data);
-
     switch(data.type) {
       case 'users':
         joinUsersToRoom(data.users, data.room_id)
@@ -27,9 +25,13 @@ consumer.subscriptions.create("RoomChannel", {
         messageBoxScrollTop()
         break
       case 'message':
-        let template = data.sent_by == 'me' ? messageByMeTemplate : messageByFriendTemplate;
+        let template = isSentByMe(data) ? messageByMeTemplate : messageByFriendTemplate
 
-        addMessageUI('.message-box', template, data)
+        if(isInChatRoom(data.room_id)) addMessageUI('.message-box', template, data)
+
+        updateRoomUI('.inbox_chat', roomTemplate, data)
+
+        if(!isSentByMe(data) && !isInChatRoom(data.room_id)) notifyRoom('.inbox_chat', data) 
 
         messageBoxScrollTop()
         break;

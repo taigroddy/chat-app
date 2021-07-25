@@ -23,13 +23,13 @@ class RoomsController < ApplicationController
   def add_message
     message = Message.create(message_params)
 
-    RoomChannel.broadcast_to(@room, message.as_json.merge(sent_by: current_user.email))
+    RoomChannel.broadcast_to(@room, message.as_json.merge(sent_by: current_user.email, sent_at: message.created_at))
   end
 
   def load_messages
-    @messages = @room.messages.joins(:user).select_user_email.map(&map_message_info)
+    messages = @room.messages.joins(:user).select_user_email.each(&map_message_info)
 
-    render json: @messages
+    render json: messages
   end
 
   def add_users_to_room
@@ -60,13 +60,8 @@ class RoomsController < ApplicationController
   end
 
   def map_message_info
-    lambda do |m|
-      sent_by = m.sent_by == current_user.email ? 'Me' : m.sent_by
-
-      { 
-        sent_by: sent_by, 
-        content: m.content
-      }
+    lambda do |msg|
+      msg.sent_by = 'me' if current_user.id == msg.user_id
     end
   end
 end

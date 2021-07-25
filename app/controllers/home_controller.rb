@@ -3,10 +3,12 @@
 ##
 class HomeController < ApplicationController
   def index
-    @rooms = Rooms::LastMessageQuery.call(current_user.id)
+    current_user_id = current_user.id
 
-    @messages = @rooms.present? ? Message.where(room_id: @rooms.first.id).select_user_email : []
+    @rooms = Rooms::LastMessageQuery.call(current_user_id)
 
-    @users = User.all.where.not(id: current_user.id)
+    @messages = Message.where(room_id: @rooms.first.id).select_user_email
+
+    @users = User.all.where.not(id: current_user_id)
   end
 end

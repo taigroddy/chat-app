@@ -1,4 +1,9 @@
-<div class="message-line">
-  <p class="text-end">Me</p>
-  <p class="alert alert-success"><%= message.present? ? message[:content] : '{{content}}' %></p>
+<%
+  content    = message.try(:content) || '{{content}}'
+  sent_at = message.try(:sent_at) || message.try(:created_at) || '{{sent_at}}'
+%>
+<div class="outgoing_msg">
+  <div class="sent_msg">
+    <p title="Sent at <%= sent_at %>"><%= content %></p>
+  </div>
 </div>

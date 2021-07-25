@@ -1,25 +1,64 @@
-<div class="row">
-  <div class="col-md-3">
-    <div class="rooms">
-      <%= render 'modal/add_new_room', users: @users %>
+<div class="container p-0">
+  <div class="messaging">
+    <div class="inbox_msg">
+      <div class="inbox_people">
 
-      <% @rooms.each do |room| %>
-        <%= render template: 'rooms/template', locals: { room: room } %>
-      <% end %>
-    </div>
-  </div>
+        <div class="headind_srch">
+          <div class="recent_heading">
+            <div class="d-flex">
+              <div class="user-menu mr-2">
+                <button class="btn" type="button" data-toggle="dropdown">
+                  <i class="fa fa-bars"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" type="button" href="<%= logout_users_path %>">Logout</a>
+                </div>
+              </div>
 
-  <div class="col-md-9 position-relative">
-    <%= render 'modal/add_users', users: @users %>
-    <div class="message-box">
-      <%= render template: 'messages/message_box', messages: @messages %>
-    </div>
-    <div class="send-message">
-      <%= form_with url: add_message_rooms_path, method: :post, id: 'send-mesage-box' do |form| %>
-        <%= form.text_area :content %>
-        <%= form.hidden_field :room_id, value: @rooms.present? ? @rooms.first.id : 0 %>
-        <%= form.submit 'Send', name: 'send' %>
-      <% end %>
+              <h4>Rooms</h4>
+            </div>
+          </div>
+          <div class="stylish-input-group">
+            <%= render 'modal/add_new_room', users: @users %>
+          </div>
+        </div>
+        <div class="inbox_chat">
+            <% @rooms.each_with_index do |room, index| %>
+              <%= render template: 'rooms/template', locals: {
+                room: {
+                    sent_at: Time.current, last_message: ''
+                  }.merge(room.as_json.compact),
+                active: index.zero?
+              } %>
+            <% end %>
+        </div>
+      </div>
+
+      <div class="mesgs">
+        <div class="headind_srch">
+          <div class="recent_heading">
+            <h4 id='room-tilte'><%= @rooms&.first&.title %></h4>
+          </div>
+
+          <div class="stylish-input-group">
+            <%= render 'modal/add_users', users: @users %>
+          </div>
+        </div>
+
+        <div class="message-box">
+          <%= render template: 'messages/message_box', messages: @messages %>
+        </div>
+
+        <div class="type_msg">
+          <div class="input_msg_write">
+            <%= form_with url: add_message_rooms_path, method: :post, id: 'send-mesage-box' do |form| %>
+              <%= form.text_field :content, class: 'write_msg', placeholder: 'Type a message', autocomplete: 'off' %>
+              <%= form.hidden_field :room_id, value: @rooms.present? ? @rooms.first.id : 0 %>
+              <%= form.button '<i class="fa fa-paper-plane-o" aria-hidden="true"></i>'.html_safe, type: 'submit', class: 'msg_send_btn' %>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

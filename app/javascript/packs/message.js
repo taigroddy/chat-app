@@ -45,3 +45,7 @@ export function loadRoomMessages(room_id) {
     }
   )
 }
+
+export function isSentByMe(data) {
+  return data.sent_by == 'me'
+}

@@ -1,5 +1,19 @@
-<div class="room">
-  <input type="hidden" value="<%= room.present? ? room.id : '{{id}}' %>">
-  <h6><%= room.present? ? room.title : '{{title}}' %></h6>
-  <p><%= room.present? ? room.last_message : '{{last_message}}' %></p>
+<%
+  room.symbolize_keys!
+
+  id = room[:id] || '{{id}}'
+  title = room[:title] || '{{title}}'
+  last_message = room[:last_message] || '{{last_message}}'
+  sent_at = room[:sent_at].try(:to_date) || '{{sent_at}}'
+  active_class = defined?(active) && active.present? ? 'active' : ''
+%>
+
+<div class="chat_list <%= active_class %>" data-room-id="<%= id %>" data-title="<%= title %>" data-last-sent-at="<%= room[:sent_at] %>">
+  <div class="chat_people">
+    <div class="chat_img"><i class="fa fa-comments-o"></i></div>
+    <div class="chat_ib">
+      <h5><%= title %><span class="chat_date"><%= sent_at %></span></h5>
+      <p><%= last_message %></p>
+    </div>
+  </div>
 </div>
