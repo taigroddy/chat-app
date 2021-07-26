@@ -10,10 +10,15 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_tree .
- *= require_self
  */
-
-@import 'bootstrap/scss/bootstrap.scss';
-$fa-font-path : 'font-awesome/fonts';
-@import 'font-awesome/scss/font-awesome.scss';
+@import '~bootstrap/scss/bootstrap.scss';
+$fa-font-path : '~font-awesome/fonts';
+@import '~font-awesome/scss/font-awesome.scss';
+@import '~select2/src/scss/core.scss';
+@import '~animate.css/animate.min';
+@import '../stylesheets/scaffolds.scss';
+@import '../stylesheets/home.scss';
+@import '../stylesheets/template.scss';
+@import '../stylesheets/rooms.scss';
+@import '../stylesheets/messages.scss';
+@import '../stylesheets/custom-modal.scss';

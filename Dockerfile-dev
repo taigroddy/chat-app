@@ -1,5 +1,7 @@
 FROM bitnami/ruby:3.0.2
 
+ENV BUNDLE_PATH='./vendor/bundle'
+
 RUN apt-get update && apt-get install -y libmariadb-dev
 RUN apt-get install -y vim
 RUN apt-get -y install curl gnupg

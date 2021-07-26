@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_210_719_105_048) do
+ActiveRecord::Schema.define(version: 2021_07_19_105048) do
+
   create_table "messages", charset: "utf8", force: :cascade do |t|
     t.string "content"
     t.bigint "user_id"
@@ -31,8 +32,8 @@ ActiveRecord::Schema.define(version: 20_210_719_105_048) do
   create_table "rooms_users", id: false, charset: "utf8", force: :cascade do |t|
     t.bigint "room_id", null: false
     t.bigint "user_id", null: false
-    t.index %w[room_id user_id], name: "index_rooms_users_on_room_id_and_user_id", unique: true
-    t.index %w[user_id room_id], name: "index_rooms_users_on_user_id_and_room_id", unique: true
+    t.index ["room_id", "user_id"], name: "index_rooms_users_on_room_id_and_user_id", unique: true
+    t.index ["user_id", "room_id"], name: "index_rooms_users_on_user_id_and_room_id", unique: true
   end
 
   create_table "users", charset: "utf8", force: :cascade do |t|

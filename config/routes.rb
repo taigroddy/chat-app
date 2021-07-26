@@ -1,5 +1,8 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   root 'home#index'
+  mount Sidekiq::Web => '/sidekiq'
 
   resources :rooms, only: [:create, :update, :destroy] do
     collection do

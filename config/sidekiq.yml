@@ -1,0 +1,10 @@
+development:
+  :concurrency: 5
+production:
+  :concurrency: 3
+:queues:
+  - default
+:schedule:
+  reload_web_to_avoid_sleep:
+    cron: '* * * * *'   
+    class: ReloadWebToAvoidSleepWorker

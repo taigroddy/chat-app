@@ -1,6 +1,7 @@
 <div class="text-center">
   <%= form_for(resource, as: resource_name, html: { class: "form-signin" }, url: session_path(resource_name)) do |f| %>
     <img class="mb-4" src="<%= asset_path('logo.png') %>">
+    <%= render "devise/shared/error_messages", resource: resource %>
 
     <%= f.email_field :email, autocomplete: "email", placeholder: "Email", class: "form-control" %>
     <%= f.password_field :password, autocomplete: "current-password", placeholder: "Password", class: "form-control" %>

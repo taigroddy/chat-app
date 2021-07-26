@@ -1,5 +1,5 @@
 import { generateHTMLFromTemplate, getTemplate } from './template'
-import { format, formatDistance } from 'date-fns'
+import { formatDistance } from 'date-fns'
 
 require('jquery')
 

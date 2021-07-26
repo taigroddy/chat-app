@@ -1,5 +1,4 @@
 require('select2')
-require('select2/dist/css/select2.css')
 
 export function addUsersBeforeModalOpen(selector, options = {}) {
   $(document).on('show.bs.modal', selector, function () {
