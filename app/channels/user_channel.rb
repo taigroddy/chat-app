@@ -3,7 +3,7 @@
 ##
 class UserChannel < ApplicationCable::Channel
   def subscribed
-    stream_for current_user if current_user
+    stream_for current_user if current_user.present?
   end
 
   def unsubscribed

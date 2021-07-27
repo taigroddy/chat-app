@@ -1,7 +1,5 @@
 import { generateHTMLFromTemplate, getTemplate } from './template'
 
-require('jquery')
-
 export function messageBox() {
   return $(".message-box")
 }

@@ -1,6 +1,9 @@
 import { addUsersBeforeModalOpen } from './custom-modal';
 import { loadRoomMessages } from './message';
+import { closeSidebarMenu } from './mobile';
 import { refreshLastSentAtOfRoom } from './room';
+
+const MOBILE_SCREEN = 768;
 
 // Form
 $(document).on('submit', '#send-mesage-box', function($e) {
@@ -54,6 +57,11 @@ $(document).on('click', '.chat_list', function() {
  
   $('.chat_list').removeClass('active')
   $(this).addClass('active')
+
+  if ($(window).width() < 768) {
+    console.log('okay')
+    closeSidebarMenu()
+  }
 });
 
 addUsersBeforeModalOpen('#newRoom', { exclude: 'me' })

@@ -1,8 +1,6 @@
 import { generateHTMLFromTemplate, getTemplate } from './template'
 import { formatDistance } from 'date-fns'
 
-require('jquery')
-
 export const roomUrl = {
   template: '/templates/room',
   create: '/rooms'
@@ -38,7 +36,7 @@ export function updateRoomUI(selector, template, data) {
   element.html(
     $(generateHTMLFromTemplate(template, data)).html()
   )
-  
+
   updateLastSentAtOfRoom(element)
 
   $(selector).sortChildren('last-sent-at', 'asc')
@@ -67,6 +65,6 @@ export function updateLastSentAtOfRoom(selector) {
   const element = $(selector)
 
   let sent_at = element.data('last-sent-at')
-  
+
   $(element).find('.chat_date').html(formatDistance(new Date(sent_at), new Date, { addSuffix: true }))
 }

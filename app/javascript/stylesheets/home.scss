@@ -15,10 +15,9 @@ img {
 }
 .inbox_people {
 	background: #f8f8f8 none repeat scroll 0 0;
-	float: left;
 	overflow: hidden;
-	width: 40%;
 	border-right: 1px solid #c4c4c4;
+	padding: 0px;
 }
 .inbox_msg {
 	clear: both;
@@ -135,8 +134,7 @@ img {
 	margin: 8px 0 0;
 }
 .mesgs {
-	float: left;
-	width: 60%;
+	padding: 0px;
 }
 .sent_msg {
 	p {

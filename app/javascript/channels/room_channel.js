@@ -1,16 +1,12 @@
 import consumer from "./consumer"
-import { getMeTemplate, getFriendTemplate, addMessageUI, messageBoxScrollTop, isSentByMe } from '../packs/message'
+import { addMessageUI, messageBoxScrollTop, isSentByMe } from '../packs/message'
 import { isInChatRoom, notifyRoom, updateRoomUI } from "../packs/room";
-import { addJoinRoomUI, getJoinRoomTemplate } from "../packs/user";
+import { addJoinRoomUI } from "../packs/user";
 
 
 consumer.subscriptions.create("RoomChannel", {
   async connected() {
     console.log('RoomChannel is connected')
-
-    window.messageByMeTemplate     = await getMeTemplate(),
-    window.messageByFriendTemplate = await getFriendTemplate(),
-    window.joinRoomTemplate        = await getJoinRoomTemplate()
   },
 
   disconnected() {

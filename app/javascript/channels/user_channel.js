@@ -4,8 +4,6 @@ import consumer from "./consumer"
 consumer.subscriptions.create("UserChannel", {
   async connected() {
     console.log('UserChannel is connected');
-
-    window.roomTemplate = await getRoomTemplate()
   },
 
   disconnected() {
@@ -13,6 +11,7 @@ consumer.subscriptions.create("UserChannel", {
   },
 
   received(data) {
+    console.log(data)
     switch(data.type) {
       case 'room':
         data['sent_at'] = ''

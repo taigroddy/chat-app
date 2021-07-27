@@ -1,17 +1,23 @@
 <div class="container p-0">
-  <div class="messaging">
-    <div class="inbox_msg">
-      <div class="inbox_people">
+  <div class="messaging col-md-12">
+    <div class="inbox_msg row">
+      <div class="inbox_people col-md-4 d-none d-md-block">
 
         <div class="headind_srch">
           <div class="recent_heading">
             <div class="d-flex">
+              <div class="sidebar-mobile mr-2 d-md-none">
+                <button class="btn" type="button" id="close-menu">
+                  <i class="fa fa-close"></i>
+                </button>
+              </div>
+
               <div class="user-menu mr-2">
                 <button class="btn" type="button" data-toggle="dropdown">
                   <i class="fa fa-bars"></i>
                 </button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" type="button" href="<%= logout_users_path %>">Logout</a>
+                  <a class="dropdown-item" href="<%= logout_users_path %>">Logout</a>
                 </div>
               </div>
 
@@ -32,10 +38,19 @@
               } %>
             <% end %>
         </div>
+        <div class="logout-on-mobile d-md-none">
+          <a href="<%= logout_users_path %>"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
+        </div>
       </div>
 
-      <div class="mesgs">
+      <div class="mesgs col-md-8">
         <div class="headind_srch">
+          <div class="sidebar-mobile d-md-none">
+            <button class="btn" type="button" id="open-menu">
+              <i class="fa fa-bars"></i>
+            </button>
+          </div>
+          
           <div class="recent_heading">
             <h4 id='room-tilte'><%= @rooms&.first&.title %></h4>
           </div>

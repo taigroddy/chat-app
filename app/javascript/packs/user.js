@@ -1,7 +1,5 @@
 import { generateHTMLFromTemplate, getTemplate } from './template'
 
-require('jquery')
-
 export async function getJoinRoomTemplate() {
   return getTemplate('/templates/user?type=join')
 }
