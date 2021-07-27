@@ -6,10 +6,12 @@ class RoomChannel < ApplicationCable::Channel
     return unless current_user.present?
 
     current_user.rooms.each do |room|
-      stream_for room, coder: ActiveSupport::JSON do |message|
-        transmit data_processing(message, room.id)
-      end
+      stream_for_room(room)
     end
+  end
+
+  def streaming_for_new(data)
+    stream_for_room(Room.find_by(id: data['id']))
   end
 
   def unsubscribed
@@ -17,6 +19,12 @@ class RoomChannel < ApplicationCable::Channel
   end
 
   private
+
+  def stream_for_room(room)
+    stream_for room, coder: ActiveSupport::JSON do |message|
+      transmit data_processing(message, room.id)
+    end
+  end
 
   def data_processing(message, room_id)
     if message.present?

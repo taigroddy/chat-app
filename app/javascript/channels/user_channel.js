@@ -1,5 +1,6 @@
-import { addRoomUI, getRoomTemplate } from "../packs/room";
+import { addRoomUI } from "../packs/room";
 import consumer from "./consumer"
+import { roomChannel } from "./room_channel";
 
 consumer.subscriptions.create("UserChannel", {
   async connected() {
@@ -11,12 +12,13 @@ consumer.subscriptions.create("UserChannel", {
   },
 
   received(data) {
-    console.log(data)
     switch(data.type) {
       case 'room':
         data['sent_at'] = ''
 
         addRoomUI('.inbox_chat', roomTemplate, data)
+        
+        roomChannel.streaming_for_new(data)
         break;
     }
   }

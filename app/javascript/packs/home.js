@@ -5,6 +5,11 @@ import { refreshLastSentAtOfRoom } from './room';
 
 const MOBILE_SCREEN = 768;
 
+// Modal
+addUsersBeforeModalOpen('#newRoom', { exclude: 'me' })
+addUsersBeforeModalOpen('#addUsers', { exclude: 'me' })
+// END
+
 // Form
 $(document).on('submit', '#send-mesage-box', function($e) {
   $e.preventDefault();
@@ -22,9 +27,9 @@ $(document).on('submit', '#new-room-form', function($e) {
 
   this.submit();
 
-  $('#close-new-room-form').click();
-
   this.reset();
+
+  $('#close-new-room-form').click();
 })
 
 $(document).on('submit', '#add-user-form', function($e) {
@@ -38,13 +43,7 @@ $(document).on('submit', '#add-user-form', function($e) {
 
   this.reset();
 })
-
-
-$(document).on('keypress', '#send-mesage-box textarea', function() {
-  if ($(this).val().length > 0) {
-    $('#send-mesage-box input[type="submit"]').prop('disabled', null);
-  }
-})
+// END
 
 $(document).on('click', '.chat_list', function() {
   let room_id = $(this).data('room-id'),
@@ -58,21 +57,19 @@ $(document).on('click', '.chat_list', function() {
   $('.chat_list').removeClass('active')
   $(this).addClass('active')
 
-  if ($(window).width() < 768) {
-    console.log('okay')
+  if ($(window).width() < MOBILE_SCREEN) {
     closeSidebarMenu()
   }
 });
 
-addUsersBeforeModalOpen('#newRoom', { exclude: 'me' })
-addUsersBeforeModalOpen('#addUsers', { exclude: 'me' })
-
+// Refresh last sent at of rooms
 $(document).ready(function(){ 
   refreshLastSentAtOfRoom()
 })
 
-setInterval(() => { refreshLastSentAtOfRoom }, 60000)
-
 $(window).on('focus', function () {
   refreshLastSentAtOfRoom()
 });
+
+setInterval(() => { refreshLastSentAtOfRoom }, 60000)
+// END

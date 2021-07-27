@@ -4,7 +4,7 @@ import { isInChatRoom, notifyRoom, updateRoomUI } from "../packs/room";
 import { addJoinRoomUI } from "../packs/user";
 
 
-consumer.subscriptions.create("RoomChannel", {
+export const roomChannel = consumer.subscriptions.create("RoomChannel", {
   async connected() {
     console.log('RoomChannel is connected')
   },
@@ -32,6 +32,10 @@ consumer.subscriptions.create("RoomChannel", {
         messageBoxScrollTop()
         break;
     }
+  },
+
+  streaming_for_new(data) {
+    this.perform('streaming_for_new', data)
   }
 });
 

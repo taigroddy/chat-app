@@ -2,14 +2,17 @@ require('select2')
 
 export function addUsersBeforeModalOpen(selector, options = {}) {
   $(document).on('show.bs.modal', selector, function () {
-    $(selector).find('select').select2().empty().trigger('change')
+    let select = $(selector).find('select')
+    select.select2().empty().trigger('change')
 
     $.get(requestUrl(options), function(res) {
       let data = $.map(res, function(item) {
         return new Option(item.email, item.id, false, false);
       })
 
-      $(selector).find('select').html(data).trigger('change')
+      select.html(data).trigger('change')
+
+      $(selector).find('input[type="submit"]').removeAttr('disabled')
     })
   })
 }

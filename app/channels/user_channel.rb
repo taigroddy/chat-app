@@ -9,4 +9,12 @@ class UserChannel < ApplicationCable::Channel
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
   end
+
+  def stream_for_user(user)
+    stream_for user
+  end
+
+  def stop_stream_for_user(user)
+    stop_stream_for User.find_by(id: user['id'])
+  end
 end

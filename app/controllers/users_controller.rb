@@ -14,6 +14,8 @@ class UsersController < ApplicationController
   end
 
   def logout
+    UserChannel.broadcast_to(current_user, { type: 'logout', user: current_user })
+
     sign_out(User)
 
     redirect_to root_path
