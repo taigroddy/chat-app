@@ -11,7 +11,7 @@ class ReloadWebToAvoidSleepWorker
   sidekiq_options retry: 0
 
   def perform
-    uri = root_path
+    uri = ENV.fetch('RELOAD_URL') { root_path }
 
     Net::HTTP.get(URI.parse(uri))
   end
