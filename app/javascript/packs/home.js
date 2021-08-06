@@ -1,5 +1,5 @@
 import { addUsersBeforeModalOpen } from './custom-modal';
-import { loadRoomMessages } from './message';
+import { loadRoomMessages, removeOverlay, sendMessage } from './message';
 import { closeSidebarMenu } from './mobile';
 import { refreshLastSentAtOfRoom } from './room';
 
@@ -17,8 +17,9 @@ $(document).on('submit', '#send-mesage-box', function($e) {
   let input = $(this).find('input[type="text"]').val()
   
   if(input != undefined && input != '') {
-    this.submit();
-    this.reset();
+    sendMessage($(this).serialize(), () => {})
+
+    this.reset()
   }
 })
 
@@ -42,6 +43,8 @@ $(document).on('submit', '#add-user-form', function($e) {
   $('#close-add-users-form').click();
 
   this.reset();
+
+  removeOverlay()
 })
 // END
 
@@ -56,6 +59,8 @@ $(document).on('click', '.chat_list', function() {
  
   $('.chat_list').removeClass('active')
   $(this).addClass('active')
+  
+  removeOverlay()
 
   if ($(window).width() < MOBILE_SCREEN) {
     closeSidebarMenu()
@@ -73,3 +78,14 @@ $(window).on('focus', function () {
 
 setInterval(() => { refreshLastSentAtOfRoom }, 60000)
 // END
+
+// Overlay create a new room
+$(document).on('click', '#open-new-room-modal', function() {
+  if ($(window).width() < MOBILE_SCREEN) {
+    $('.sidebar-mobile #open-menu').click();
+    $('a[data-target="#newRoom"]').click();
+  } else {
+    $('.sidebar-mobile #open-menu').click();
+    $('a[data-target="#newRoom"]').click();
+  }
+})

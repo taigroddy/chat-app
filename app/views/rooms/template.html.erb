@@ -1,14 +1,12 @@
 <%
-  room.symbolize_keys!
-
-  id = room[:id] || '{{id}}'
-  title = room[:title] || '{{title}}'
-  last_message = room[:last_message] || '{{last_message}}'
-  sent_at = room[:sent_at].try(:to_date) || '{{sent_at}}'
+  id = room.id || '{{id}}'
+  title = room.title || '{{title}}'
+  last_message = room.last_message || '{{last_message}}'
+  sent_at = room.sent_at.try(:to_date) || '{{sent_at}}'
   active_class = defined?(active) && active.present? ? 'active' : ''
 %>
 
-<div class="chat_list <%= active_class %>" data-room-id="<%= id %>" data-title="<%= title %>" data-last-sent-at="<%= room[:sent_at] %>">
+<div class="chat_list <%= active_class %>" data-room-id="<%= id %>" data-title="<%= title %>" data-last-sent-at="<%= room.sent_at %>">
   <div class="chat_people">
     <div class="chat_img"><i class="fa fa-comments-o"></i></div>
     <div class="chat_ib">

@@ -4,12 +4,20 @@ export function messageBox() {
   return $(".message-box")
 }
 
+export function removeOverlay() {
+  $('.mesgs .overlay').addClass('d-none')
+}
+
 export async function getFriendTemplate() {
   return await getTemplate('/templates/message')
 }
 
 export async function getMeTemplate() {
   return await getTemplate('/templates/message?for=me')
+}
+
+export async function sendMessage(data, callback) {
+  $.post('rooms/add_message', data).done((res) => callback(res) )
 }
 
 export function addMessageUI(selector, template, data) {

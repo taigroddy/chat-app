@@ -93,7 +93,7 @@ img {
   }
 }
 .inbox_chat {
-	height: calc(100% - 40px);
+	height: calc(100vh - 70px);
 	overflow-y: scroll;
 }
 .active_chat {
@@ -136,6 +136,28 @@ img {
 }
 .mesgs {
 	padding: 0px;
+	position: relative;
+	.overlay {
+		position: absolute;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background: white;
+		p {
+			font-size: 15px;
+			color: #2d728f;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			label {
+				cursor: pointer;
+			}
+		}
+	}
 }
 .sent_msg {
 	p {
@@ -187,7 +209,7 @@ img {
 	outline: none !important;
 }
 .message-box {
-	height: calc(100% - 100px);
+	height: calc(100vh - 128px);
 	overflow-y: auto;
   padding: 10px;
   border-bottom: 1px solid #c4c4c4;

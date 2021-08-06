@@ -27,7 +27,7 @@ export function addRoomUI(selector, template, data) {
 export function updateRoomUI(selector, template, data) {
   const element = $(selector).find(`.chat_list[data-room-id="${data.room_id}"]`)
 
-  data['last_message'] = data['content']
+  data['last_message'] ||= data['content']
   data['id'] = data['room_id']
   data['title'] = element.data('title')
 

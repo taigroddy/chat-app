@@ -5,7 +5,7 @@ class TemplatesController < ApplicationController
   skip_before_action :authenticate_user!
 
   def room
-    render template: 'rooms/template', layout: false, locals: { room: {} }
+    render template: 'rooms/template', layout: false, locals: { room: Room.new }
   end
 
   def user

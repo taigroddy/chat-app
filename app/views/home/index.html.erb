@@ -31,9 +31,7 @@
         <div class="inbox_chat">
             <% @rooms.each_with_index do |room, index| %>
               <%= render template: 'rooms/template', locals: {
-                room: {
-                    sent_at: Time.current, last_message: ''
-                  }.merge(room.as_json.compact),
+                room: room,
                 active: index.zero?
               } %>
             <% end %>
@@ -44,6 +42,14 @@
       </div>
 
       <div class="mesgs col-md-8">
+        <% if @rooms.count.zero? %>
+          <div class="overlay">
+            <p>
+              <label id="open-new-room-modal"><i class="fa fa-plus" aria-hidden="true"></i> Create a new room</label>
+            </p>
+          </div>
+        <% end %>
+
         <div class="headind_srch">
           <div class="sidebar-mobile d-md-none">
             <button class="btn" type="button" id="open-menu">

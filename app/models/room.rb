@@ -24,4 +24,12 @@ class Room < ApplicationRecord
   def default_message
     ''
   end
+
+  def last_message
+    respond_to?(:last_content_encrypted) ? MessageEncryption.call(key).decode(last_content_encrypted) || '' : nil
+  end
+
+  def sent_at
+    defined?(last_message_sent_at) ? last_message_sent_at : created_at
+  end
 end

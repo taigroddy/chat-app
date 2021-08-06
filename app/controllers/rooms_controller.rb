@@ -23,11 +23,16 @@ class RoomsController < ApplicationController
   def add_message
     message = Message.create(message_params)
 
-    RoomChannel.broadcast_to(@room, message.as_json.merge(sent_by: current_user.email, sent_at: message.created_at))
+    RoomChannel.broadcast_to(@room, message.slice(
+        :content, :user_id, :type, :room_id, :created_at
+      ).merge(sent_by: current_user.email, sent_at: message.created_at)
+    )
+
+    render json: { status: 'is_sent' }
   end
 
   def load_messages
-    messages = @room.messages.joins(:user).select_user_email.each(&map_message_info)
+    messages = @room.messages.joins(:user).select_user_email.map(&map_message_info)
 
     render json: messages
   end
@@ -56,12 +61,14 @@ class RoomsController < ApplicationController
   end
 
   def message_params
-    params.permit(:content).merge({ user: current_user, room: @room })
+    { user: current_user, room: @room , content: params[:content] }
   end
 
   def map_message_info
     lambda do |msg|
-      msg.sent_by = 'me' if current_user.id == msg.user_id
+      msg.slice(
+        :content, :user_id, :type, :room_id, :created_at
+      ).merge(sent_by: current_user.id == msg.user_id ? 'me' : current_user.email, sent_at: msg.created_at)
     end
   end
 end

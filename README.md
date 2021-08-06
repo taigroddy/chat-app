@@ -18,7 +18,7 @@ Only run `docker-compose up -d` and open `http://localhost:3002`
 - The UI (Responsive) is not good for now.
 - The main flow is only created in one time to thought so I missed a lots of thing.
 - I didn't write the testing for code (It's bad, sooo bad).
-- Encrypt/Decrypt message. I recommend using `ActiveSupport::MessageEncryptor` with KEY = SECRET_KEY_BASE + `key` (I've really created a cols `key` in table `room`).
+- Catch errors
 
 #### The end
 Link demo: https://chat-res.herokuapp.com/
